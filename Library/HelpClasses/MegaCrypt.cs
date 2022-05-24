@@ -183,7 +183,7 @@ namespace GnuOne.Data
             //var privateKey = File.ReadAllText(senderPrivateKeyLocation);
             var privateKey = senderPrivateKey;
             RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider();
-            RSAalg.ImportFromPem(privateKey);
+            RSAalg.ImportFromPem("" + privateKey + "");
             RSAParameters Key = RSAalg.ExportParameters(true);
             //Genererar hashet för den krypterade AES nyckeln + saltet som vi skickar.
             byte[] data = Encoding.UTF8.GetBytes(secret + ";;;" + salt);

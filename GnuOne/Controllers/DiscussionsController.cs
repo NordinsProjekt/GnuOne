@@ -142,7 +142,7 @@ namespace GnuOne.Controllers
             foreach (var user in _context.MyFriends)
             {
                 if (user.isFriend == false) { continue; }
-                MailSender.SendObject(jsonDiscussion, user.Email, _settings, "PostedDiscussion");
+                MailSender.SendObject(jsonDiscussion, user.Email, _settings, "PostedDiscussion",user.pubKey);
             }
 
             await _context.AddAsync(discussion);

@@ -46,18 +46,40 @@ namespace GnuOne.Data
                     var message = client.Inbox.GetMessage(mail);
                     var emailFrom = message.From.ToString();
                     string cleanEmailFrom = SkrubbaMailAdress(emailFrom);
-
-
+                    string decryptedMessage = "";
                     var subject = message.Subject;
-                    string body = message.GetTextBody(MimeKit.Text.TextFormat.Plain);
+                    //Första säkerhetslagret, krypterat med aes (standard lösenord)
+                    string body = AesCryption.Decrypt(message.GetTextBody(MimeKit.Text.TextFormat.Plain),myInfo.Secret);
+                    //splittar upp meddelandet, textmeddelandet, signaturen, aes lösenordet.
                     string[] splittedBody = body.Split("XYXY/(/(XYXY7");
                     string[] Sub;
 
                     if (subject.Contains("/()/"))
                     {
                         Sub = subject.Split("/()/");
-                        string decryptedMessage = AesCryption.Decrypt(splittedBody[0], myInfo.Secret);
-                        string[] Data = decryptedMessage.Split("\"");
+                        if (splittedBody.Length == 2)
+                        {
+                            MegaCrypt tempCrypt = new MegaCrypt(splittedBody);
+                            //Hämtar publickey för den som skickade.
+                            var user = _newContext.MyFriends.FirstOrDefault(u => u.Email == emailFrom);
+                            //Avkryptera
+                            if (tempCrypt.RSADecryptIt(user.pubKey, @"c:\inst\private.pkk"))
+                            {
+                                //om sant så är allt ok.
+                                decryptedMessage = tempCrypt.body;
+                            }
+                            else
+                            {
+                                //Något är fel med meddelandet. Ignorera.
+                                continue;
+                            }
+                            
+                        }
+                        else
+                        {
+                            decryptedMessage = splittedBody[0];
+                        }
+
 
                         switch (Sub[1])
                         {
