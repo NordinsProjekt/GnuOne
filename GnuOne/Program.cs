@@ -79,7 +79,7 @@ while (keepGoing)
                 ID = 1,
                 Email = email,
                 pictureID = 1,
-                MyPubKey = "" //här ska public key finnas
+                MyPubKey = publicKey //här ska public key finnas
             };
 
             try
@@ -105,11 +105,11 @@ while (keepGoing)
 }
 
 //Öppnar websidan.
-Process.Start(new ProcessStartInfo
-{
-    FileName = "https://localhost:5001/",
-    UseShellExecute = true
-});
+//Process.Start(new ProcessStartInfo
+//{
+//    FileName = "https://localhost:5001/",
+//    UseShellExecute = true
+//});
 
 var builder = WebApplication.CreateBuilder(args);
 string _connectionstring = builder.Configuration.GetConnectionString("DefaultConnection");
