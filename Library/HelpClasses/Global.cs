@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `myfriends` (
   `userName` varchar(50) DEFAULT NULL,
   `Email` varchar(50) NOT NULL,
   `IsFriend` bit(1) DEFAULT NULL,
-  `pubKey` varchar(50) DEFAULT NULL,
+  `pubKey` text DEFAULT NULL,
   `userInfo` varchar(300) DEFAULT NULL,
   `pictureID` int(11) DEFAULT NULL,
   `tagOne` int(11) DEFAULT NULL,
