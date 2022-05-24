@@ -734,7 +734,8 @@ namespace GnuOne.Data
 
         private static int RecieveFriendRequest(string decryptedMessage, MariaContext context)
         {
-            var potentialfriend = JsonConvert.DeserializeObject<MyFriend>(decryptedMessage);
+            string temp = JsonConvert.DeserializeObject<string>(decryptedMessage);
+            var potentialfriend = JsonConvert.DeserializeObject<MyFriend>(temp);
 
             if (potentialfriend is not null)
             {
