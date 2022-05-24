@@ -572,7 +572,8 @@ namespace GnuOne.Data
 
         private static int UpdateFriendFriends(string decryptedMessage, MariaContext context)
         {
-            var newFriendFriends = JsonConvert.DeserializeObject<MyFriendsFriends>(decryptedMessage);
+            string temp = JsonConvert.DeserializeObject<string>(decryptedMessage);
+            var newFriendFriends = JsonConvert.DeserializeObject<MyFriendsFriends>(temp);
 
             if (newFriendFriends is not null)
             {
@@ -657,7 +658,7 @@ namespace GnuOne.Data
 
         private static int ReceieveInfoAndAcceptFriend(string decryptedMessage, MariaContext context, bool isSendBack, string myEmail, string subject)
         {
-            string temp = JsonConvert.SerializeObject(decryptedMessage);
+            string temp = JsonConvert.DeserializeObject<string>(decryptedMessage);
             var theirLists = JsonConvert.DeserializeObject<BigList>(temp);
 
             var email = theirLists.FromEmail;
@@ -719,7 +720,7 @@ namespace GnuOne.Data
 
         private static int RecieveDeniedFriendRequest(string decryptedMessage, MariaContext context)
         {
-            string temp = JsonConvert.SerializeObject(decryptedMessage);
+            string temp = JsonConvert.DeserializeObject<string>(decryptedMessage);
             var notNewFriend = JsonConvert.DeserializeObject<MyFriend>(temp);
 
             if (notNewFriend is not null)
