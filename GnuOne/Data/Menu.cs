@@ -60,6 +60,32 @@ namespace GnuOne.Data
             return text;
         }
 
+        public static string[] EnterMailInfo(string titel)
+        {
+            string[] text =
+            {
+                titel.ToString(),
+                "Hello",
+                "Welcome to the Gnu-network",
+                "Please enter your mail and password",
+                "\n"
+            };
+            return text;
+        }
+
+        public static string[] EnterUsername(string titel)
+        {
+            string[] text =
+            {
+                titel.ToString(),
+                "Hello",
+                "Welcome to the Gnu-network",
+                "Please choose your username",
+                "\n"
+            };
+            return text;
+        }
+
         /// <summary>
         /// Ritar upp all text som skickas till den.
         /// </summary>

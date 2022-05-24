@@ -49,7 +49,7 @@ namespace GnuOne.Data
             {
                 friendFriend.userName = newUsername;
             }
-                context.Discussions.UpdateRange(myDiscussions);
+            context.Discussions.UpdateRange(myDiscussions);
             context.Posts.UpdateRange(myPosts);
             context.Comments.UpdateRange(myComments);
             context.MyFriendsFriends.UpdateRange(myUserfriendsFriend);

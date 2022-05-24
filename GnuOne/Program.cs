@@ -11,66 +11,6 @@ using System.Text;
 using Welcome_Settings;
 
 string[] empty = { string.Empty };
-/// 
-/// 
-/// PUBLISHA - kunna köra utan VS
-/// 
-///  
-/// 
-/// Lägga till vänner / grupper -- Hur blir det med nycklar. 
-///     Bjuda in via mail? - vanlig mail / dedikerad gmail?
-///     Krypera lösenord till mailen, nycklar mellan sina vänner/ grupper.
-///     PM
-/// 
-/// --bittorrent--
-/// backup - restore
-/// 
-/// </summary>
-/// 
-/// 
-/// PUBLISHA - kunna köra utan VS
-/// 
-///  
-/// 
-/// Lägga till vänner / grupper -- Hur blir det med nycklar. 
-///     Bjuda in via mail? - vanlig mail / dedikerad gmail?
-///     Krypera lösenord till mailen, nycklar mellan sina vänner/ grupper.
-///     PM
-/// 
-/// --bittorrent--
-/// backup - restore
-/// 
-/// </summary>
-/// 
-/// 
-/// PUBLISHA - kunna köra utan VS
-/// 
-///  
-/// 
-/// Lägga till vänner / grupper -- Hur blir det med nycklar. 
-///     Bjuda in via mail? - vanlig mail / dedikerad gmail?
-///     Krypera lösenord till mailen, nycklar mellan sina vänner/ grupper.
-///     PM
-/// 
-/// --bittorrent--
-/// backup - restore
-/// 
-/// </summary>
-/// 
-/// 
-/// PUBLISHA - kunna köra utan VS
-/// 
-///  
-/// 
-/// Lägga till vänner / grupper -- Hur blir det med nycklar. 
-///     Bjuda in via mail? - vanlig mail / dedikerad gmail?
-///     Krypera lösenord till mailen, nycklar mellan sina vänner/ grupper.
-///     PM
-/// 
-/// --bittorrent--
-/// backup - restore
-/// 
-/// </summary>
 bool keepGoing = true;
 while (keepGoing)
 {
@@ -104,18 +44,23 @@ while (keepGoing)
         else
         {
             Console.Clear();
-
-            Console.Clear();
             Meny.DefaultWindow2("");
             Meny.Draw(Meny.EnterCredMenu(""), 38, 15, ConsoleColor.White);
-
+            Console.Clear();
+            Meny.DefaultWindow2("");
+            Meny.Draw(Meny.EnterMailInfo(""), 38, 15,ConsoleColor.White);
+            Console.CursorLeft = 38;
             Console.Write("Write your Email: ");
             var email = Console.ReadLine();
+            Console.CursorLeft = 38;
             Console.Write("EmailPassword: ");
             var password = pwMask.pwMasker();
             ; ///hårdkordad
-            Console.Write("\n");
-            Console.Write("choose your username: ");
+            Console.Clear();
+            Meny.DefaultWindow2("");
+            Meny.Draw(Meny.EnterUsername(""), 38, 15, ConsoleColor.White);
+            Console.CursorLeft = 38;
+            Console.Write("Choose your username: ");
             var username = Console.ReadLine();
             var secretk = RandomKey();
             password = AesCryption.Encrypt(password, "secretkey"); //ska bytas
@@ -128,13 +73,12 @@ while (keepGoing)
                 userName = username,
                 Secret = "secretkey"
             };
-            var profile = new myProfile
+            var profile = new myProfile //Hårdkodat
             {
                 ID = 1,
                 Email = email,
                 pictureID = 1,
             };
-
 
             try
             {
@@ -366,24 +310,14 @@ static void SetValueRecursively(string sectionPathKey, dynamic? jsonObject, stri
 }
 static string RandomKey()
 {
-    List<Char> letters = new List<Char>() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'v', 'w', 'y' };
-
-    List<int> myRndNr = new List<int>();
-
-    Random random = new Random();
+    StringBuilder sb = new StringBuilder();
+    Random rnd = new Random();
+    string letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!""#%&/()=?[]@$*-+";
     for (int i = 0; i < 10; i++)
     {
-        int value = random.Next(1, 22);
-        myRndNr.Add(value);
+        sb.Append(letters[rnd.Next(0, letters.Length)]);
     }
-    StringBuilder sw = new StringBuilder();
-    foreach (var item in myRndNr)
-    {
-
-        sw.Append(letters[item]);
-
-    }
-    return sw.ToString();
+    return sb.ToString();
 }
 
 
