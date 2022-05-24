@@ -19,19 +19,18 @@ namespace GnuOne.Data
 
         }
 
+        //Används vid Encrypt, tillsammans med RSADecryptIt
         public MegaCrypt(string json)
         {
             body = json;
         }
 
+        //Används vid decrypt
         public MegaCrypt(string[] wholemail)
         {
-            
-
             aesKey = Encoding.ASCII.GetBytes(wholemail[0]);
             body = wholemail[1];
             signature = Encoding.ASCII.GetBytes(wholemail[2]);
-
         }
         public bool RSADecryptIt(string senderPublicKey, string receiverPrivateKeyLocation)
         {

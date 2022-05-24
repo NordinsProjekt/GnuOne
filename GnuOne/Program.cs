@@ -19,9 +19,7 @@ while (keepGoing)
     Meny.Draw(Meny.EnterCredMenu(""), 38, 15, ConsoleColor.White);
     Global.ConnectionString = EnterCredMenuInput();
 
-
     //kolla hur consolen blir när man gör en ny DB
-
 
     MariaContext context = new MariaContext(Global.ConnectionString);
     MariaContext DbContext = new MariaContext(Global.CompleteConnectionString);
@@ -64,7 +62,10 @@ while (keepGoing)
             var username = Console.ReadLine();
             var secretk = RandomKey();
             password = AesCryption.Encrypt(password, "secretkey"); //ska bytas
-
+            Console.CursorLeft = 38;
+            Console.Write("Paste your public key here: ");
+            var publicKey = Console.ReadLine();
+            Console.Clear();
             var settings = new MySettings
             {
                 ID = 1,
@@ -78,6 +79,7 @@ while (keepGoing)
                 ID = 1,
                 Email = email,
                 pictureID = 1,
+                MyPubKey = "" //här ska public key finnas
             };
 
             try
@@ -100,7 +102,6 @@ while (keepGoing)
         Console.WriteLine("Det gick inte att ansluta till databasen testa igen");
         Console.WriteLine();
     }
-
 }
 
 //Öppnar websidan.

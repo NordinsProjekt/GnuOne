@@ -15,6 +15,7 @@ namespace Library.Models
         public int ID { get; set; }
         public string Email { get; set; }
         public string myUserInfo { get; set; } = "Write your bio here";
+        public string MyPubKey { get; set; }
         public int pictureID { get; set; }
         public int? tagOne { get; set; }
         public int? tagTwo { get; set; }

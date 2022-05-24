@@ -192,10 +192,7 @@ namespace GnuOne.Data
                                     var deeding12 = ForwardToFriends(decryptedMessage, _newContext, cleanEmailFrom, "FriendFriendsPicID");
                                     break;
                                 }
-                                else
-                                {
-                                    break;
-                                }
+                                break;
 
                             case "DeniedFriendRequest":
 

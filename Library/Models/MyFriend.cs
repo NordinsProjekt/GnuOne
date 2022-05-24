@@ -37,13 +37,13 @@ namespace Library
 
         public MyFriend(myProfile Profile)
         {
-            
             this.Email = Profile.Email;
             this.userInfo = Profile.myUserInfo;
             this.pictureID = Profile.pictureID;
             this.tagOne = Profile.tagOne;
             this.tagTwo = Profile.tagTwo;
             this.tagThree = Profile.tagThree;
+            this.pubKey = Profile.MyPubKey;
 
         }
     }

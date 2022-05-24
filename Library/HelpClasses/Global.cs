@@ -140,6 +140,7 @@ CREATE TABLE IF NOT EXISTS `myprofile` (
   `tagOne` int(11) DEFAULT NULL,
   `tagTwo` int(11) DEFAULT NULL,
   `tagThree` int(11) DEFAULT NULL,
+  `MyPubKey` text DEFAULT NULL,	
   PRIMARY KEY (`ID`),
   KEY `FK_myprofile_tags` (`tagOne`),
   KEY `FK_myprofile_tags_2` (`tagTwo`),
@@ -248,28 +249,6 @@ INSERT INTO `tags` (`ID`, `tagName`) VALUES
 	(19, 'Fordon'),
 	(20, 'Pengar');
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
-
--- Dumpar struktur för tabell gnu.users
-CREATE TABLE IF NOT EXISTS `users` (
-  `ID` int(11) NOT NULL,
-  `userName` varchar(50) DEFAULT NULL,
-  `Email` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`ID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Dumpar data för tabell gnu.users: ~9 rows (ungefär)
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`ID`, `userName`, `Email`) VALUES
-	(1, 'bober', 'bobertestar@gmail.com'),
-	(2, 'Sam', 'mintestmail321@gmail.com'),
-	(3, 'Albin', 'albinscodetesting@gmail.com'),
-	(4, 'Love', 'developertestingcrash@gmail.com'),
-	(5, 'Yos', 'mailconsolejonatan@gmail.com'),
-	(6, 'Daniel', 'Danielkhoshtest@gmail.com'),
-	(7, 'Boris', 'reezlatest@gmail.com'),
-	(8, 'Johanna', 'johannastestmail@gmail.com'),
-	(9, 'TheStig', 'thestigx937@gmail.com');
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;

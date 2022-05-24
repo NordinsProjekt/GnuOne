@@ -10,15 +10,27 @@ using MailKit.Net.Smtp;
 using GnuOne.Data;
 using Library.HelpClasses;
 using Welcome_Settings;
+using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Library.HelpClasses
 {
     public class MailSender
     {
         //Methods to send messages from mail.
-        public static void SendObject(string jsonObject, string email, MySettings _settings, string subject)
+        public static void SendObject(MyFriend myInfo, string email, MySettings _settings, string subject)
         {
-            var crypt = AesCryption.Encrypt(jsonObject, _settings.Secret);
+            var jsonMyInfoInObject = JsonConvert.SerializeObject(myInfo);
+            //var crypt2 = MegaCrypt.
+            var crypt = AesCryption.Encrypt(jsonMyInfoInObject, _settings.Secret);
+
+            SendEmail(_settings, email, subject, crypt);
+        }
+
+        public static void SendObject(string myInfo, string email, MySettings _settings, string subject)
+        {
+            var jsonMyInfoInObject = JsonConvert.SerializeObject(myInfo);
+            var crypt = AesCryption.Encrypt(jsonMyInfoInObject, _settings.Secret);
 
             SendEmail(_settings, email, subject, crypt);
         }

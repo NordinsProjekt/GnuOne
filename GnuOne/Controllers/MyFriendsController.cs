@@ -48,11 +48,12 @@ namespace GnuOne.Controllers
                 pictureID = myProfile.pictureID,
                 tagOne = myProfile.tagOne,
                 tagTwo = myProfile.tagTwo,
-                tagThree = myProfile.tagThree
+                tagThree = myProfile.tagThree,
+                pubKey = myProfile.MyPubKey
             };
 
             var jsonMyInfoInObject = JsonConvert.SerializeObject(myInfo);
-
+            //SerializeObject efter programmet har sparat
             MailSender.SendObject(jsonMyInfoInObject, Email.Email, _settings, "FriendRequest");
 
             _context.MyFriends.Add(potentialnewfriend);
