@@ -50,6 +50,7 @@ namespace GnuOne.Data
                     var subject = message.Subject;
                     //Första säkerhetslagret, krypterat med aes (standard lösenord)
                     string body = message.GetTextBody(MimeKit.Text.TextFormat.Plain);
+                    body = AesCryption.Decrypt(body, myInfo.Secret);
                     //splittar upp meddelandet, textmeddelandet, signaturen, aes lösenordet.
                     string[] splittedBody = body.Split("XYXY/(/(XYXY7");
                     string[] Sub;

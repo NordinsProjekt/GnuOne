@@ -46,11 +46,12 @@ namespace Library.HelpClasses
             password = AesCryption.Decrypt(password, mySettings.Secret);
 
             MimeMessage message = new MimeMessage();
+            string crypt = AesCryption.Encrypt($"{cryptMessage}XYXY/(/(XYXY7", mySettings.Secret);
 
             message.Subject = sb.ToString();
             message.Body = new TextPart("plain")
             {
-                Text = $"{cryptMessage}XYXY/(/(XYXY7"
+                Text = crypt
             };
 
             message.From.Add(new MailboxAddress(mySettings.userName, mailAddress));
@@ -86,11 +87,11 @@ namespace Library.HelpClasses
             password = AesCryption.Decrypt(password, mySettings.Secret);
 
             MimeMessage message = new MimeMessage();
-
+            string crypt = AesCryption.Encrypt($"{cryptMessage[0]}XYXY/(/(XYXY7{cryptMessage[1]}XYXY/(/(XYXY7{cryptMessage[2]}", mySettings.Secret);
             message.Subject = sb.ToString();
             message.Body = new TextPart("plain")
             {
-                Text = $"{cryptMessage[0]}XYXY/(/(XYXY7{cryptMessage[1]}XYXY/(/(XYXY7{cryptMessage[2]}"
+                Text = crypt
             };
 
             message.From.Add(new MailboxAddress(mySettings.userName, mailAddress));
