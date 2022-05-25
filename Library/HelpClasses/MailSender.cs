@@ -21,7 +21,7 @@ namespace Library.HelpClasses
         public static void SendObject(string myInfo, string email, MySettings _settings, string subject,string recieverPublicKey,string senderPrivKey)
         {
             MegaCrypt tempCrypt = new MegaCrypt(myInfo);
-            tempCrypt.RSAEncryptIt(@"c:\inst\private.pkk",recieverPublicKey);
+            tempCrypt.RSAEncryptIt(senderPrivKey,recieverPublicKey);
             var crypt = AesCryption.Encrypt(tempCrypt.body, _settings.Secret);
             string[] message = new string[] { tempCrypt.body,tempCrypt.signature.ToString(),tempCrypt.aesKey.ToString() };
             SendEmail(_settings, email, subject, message);

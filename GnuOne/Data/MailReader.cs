@@ -63,7 +63,7 @@ namespace GnuOne.Data
                             //Hämtar publickey för den som skickade.
                             var user = _newContext.MyFriends.FirstOrDefault(u => u.Email == emailFrom);
                             //Avkryptera
-                            if (tempCrypt.RSADecryptIt(user.pubKey, @"c:\inst\private.pkk"))
+                            if (tempCrypt.RSADecryptIt(user.pubKey, myInfo.MyPrivKey))
                             {
                                 //om sant så är allt ok.
                                 decryptedMessage = tempCrypt.body;
