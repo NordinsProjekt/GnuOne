@@ -61,7 +61,7 @@ namespace GnuOne.Data
                         {
                             MegaCrypt tempCrypt = new MegaCrypt(splittedBody);
                             //Hämtar publickey för den som skickade.
-                            var user = _newContext.MyFriends.FirstOrDefault(u => u.Email == emailFrom);
+                            var user = _newContext.MyFriends.FirstOrDefault(u => u.Email == cleanEmailFrom);
                             //Avkryptera
                             if (tempCrypt.RSADecryptIt(user.pubKey, myInfo.MyPrivKey))
                             {

@@ -23,7 +23,7 @@ namespace Library.HelpClasses
             MegaCrypt tempCrypt = new MegaCrypt(myInfo);
             tempCrypt.RSAEncryptIt(senderPrivKey,recieverPublicKey);
             var crypt = AesCryption.Encrypt(tempCrypt.body, _settings.Secret);
-            string[] message = new string[] { tempCrypt.body,tempCrypt.signature.ToString(),tempCrypt.aesKey.ToString() };
+            string[] message = new string[] { tempCrypt.body,Convert.ToBase64String(tempCrypt.signature), Convert.ToBase64String(tempCrypt.aesKey) };
             SendEmail(_settings, email, subject, message);
         }
 
