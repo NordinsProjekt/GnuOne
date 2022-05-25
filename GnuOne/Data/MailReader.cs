@@ -700,6 +700,7 @@ namespace GnuOne.Data
                     friend.tagOne = theirLists.myInfo.tagOne;
                     friend.tagTwo = theirLists.myInfo.tagTwo;
                     friend.tagThree = theirLists.myInfo.tagThree;
+                    friend.pubKey = theirLists.myInfo.pubKey;
                 }
 
                 context.MyFriends.Update(friend);
