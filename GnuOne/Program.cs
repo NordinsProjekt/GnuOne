@@ -68,7 +68,7 @@ while (keepGoing)
             RSA rsa = RSA.Create(4096);
             string publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
             string privateKey = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
-            
+
             var settings = new MySettings
             {
                 ID = 1,
@@ -76,14 +76,16 @@ while (keepGoing)
                 Password = password,
                 userName = username,
                 Secret = "secretkey",
-                MyPrivKey = privateKey //här ska private key finnas
+                //PEM FORMAT
+                MyPrivKey = "-----BEGIN RSA PRIVATE KEY-----" + privateKey + "-----END RSA PRIVATE KEY-----" //här ska private key finnas
             };
             var profile = new myProfile //Hårdkodat
             {
                 ID = 1,
                 Email = email,
                 pictureID = 1,
-                MyPubKey = publicKey //här ska public key finnas
+                //PEM FORMAT
+                MyPubKey = "-----BEGIN RSA PUBLIC KEY-----" + publicKey +"-----END RSA PUBLIC KEY-----" //här ska public key finnas
             };
             rsa.Dispose();
             try
