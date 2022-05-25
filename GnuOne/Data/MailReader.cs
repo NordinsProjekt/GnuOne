@@ -563,6 +563,7 @@ namespace GnuOne.Data
                 friend.tagOne = friendInfo.tagOne;
                 friend.tagTwo = friendInfo.tagTwo;
                 friend.tagThree = friendInfo.tagThree;
+                friend.pubKey = friendInfo.pubKey;
 
                 context.MyFriends.Update(friend);
                 context.SaveChangesAsync().Wait();
