@@ -12,7 +12,8 @@ namespace Library
         public string Email { get; set; }
         public string Password { get; set; }
         public string userName { get; set; }
-        public string Secret{ get; set; }
+        public string Secret { get; set; }
+        public string MyPrivKey { get; set; }
         public bool DarkMode { get; set; } = false;
     }
 }

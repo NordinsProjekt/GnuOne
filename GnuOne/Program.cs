@@ -62,17 +62,21 @@ while (keepGoing)
             var username = Console.ReadLine();
             var secretk = RandomKey();
             password = AesCryption.Encrypt(password, "secretkey"); //ska bytas
-            Console.CursorLeft = 38;
-            Console.Write("Paste your public key here: ");
-            var publicKey = Console.ReadLine();
-            Console.Clear();
+
+            //Skapar RSA nycklar och sparar dessa i databasen.
+            //Framtiden så ska detta skyddas genom krypering av den privata nyckeln.
+            RSA rsa = RSA.Create(4096);
+            string publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
+            string privateKey = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
+            
             var settings = new MySettings
             {
                 ID = 1,
                 Email = email,
                 Password = password,
                 userName = username,
-                Secret = "secretkey"
+                Secret = "secretkey",
+                MyPrivKey = privateKey //här ska private key finnas
             };
             var profile = new myProfile //Hårdkodat
             {
@@ -81,7 +85,7 @@ while (keepGoing)
                 pictureID = 1,
                 MyPubKey = publicKey //här ska public key finnas
             };
-
+            rsa.Dispose();
             try
             {
                 await DbContext.MyProfile.AddAsync(profile);

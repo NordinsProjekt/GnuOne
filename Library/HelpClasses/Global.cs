@@ -159,6 +159,7 @@ CREATE TABLE IF NOT EXISTS `mysettings` (
   `Password` varchar(75) DEFAULT NULL,
   `userName` varchar(75) DEFAULT NULL,
   `Secret` varchar(75) DEFAULT NULL,
+  `MyPrivKey` text DEFAULT NULL,
   `DarkMode` bit(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

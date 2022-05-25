@@ -80,6 +80,7 @@ namespace GnuOne.Data
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
+                Console.WriteLine(senderPrivateKeyLocation);
                 return false;
             }
             return true;
@@ -148,6 +149,9 @@ namespace GnuOne.Data
         private void EncryptAESKeyWithRSA(string receiverPublicKey, string secret, string salt)
         {
             Cryptor cryptor = new Cryptor();
+            //var rsa = RSA.Create();
+            //byte[] rsaPublic = Convert.FromBase64String(receiverPublicKey);
+            //rsa.ImportSubjectPublicKeyInfo(new ReadOnlySpan<byte>(rsaPublic), out _);
             cryptor.SetPublicKey(receiverPublicKey);
             byte[] data = Encoding.UTF8.GetBytes(secret + ";;;" + salt);
             byte[] encryptedData = cryptor.AsymmetricEncrypt(data);
