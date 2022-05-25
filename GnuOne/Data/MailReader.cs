@@ -78,7 +78,7 @@ namespace GnuOne.Data
                         }
                         else
                         {
-                            decryptedMessage = AesCryption.Decrypt(splittedBody[0], myInfo.Secret);
+                            decryptedMessage = splittedBody[0];
                         }
 
 
