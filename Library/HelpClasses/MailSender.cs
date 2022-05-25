@@ -18,7 +18,7 @@ namespace Library.HelpClasses
     public class MailSender
     {
         //Methods to send messages from mail.
-        public static void SendObject(string myInfo, string email, MySettings _settings, string subject,string recieverPublicKey)
+        public static void SendObject(string myInfo, string email, MySettings _settings, string subject,string recieverPublicKey,string senderPrivKey)
         {
             MegaCrypt tempCrypt = new MegaCrypt(myInfo);
             tempCrypt.RSAEncryptIt(@"c:\inst\private.pkk",recieverPublicKey);

@@ -49,7 +49,7 @@ namespace GnuOne.Data
                     string decryptedMessage = "";
                     var subject = message.Subject;
                     //Första säkerhetslagret, krypterat med aes (standard lösenord)
-                    string body = AesCryption.Decrypt(message.GetTextBody(MimeKit.Text.TextFormat.Plain),myInfo.Secret);
+                    string body = message.GetTextBody(MimeKit.Text.TextFormat.Plain);
                     //splittar upp meddelandet, textmeddelandet, signaturen, aes lösenordet.
                     string[] splittedBody = body.Split("XYXY/(/(XYXY7");
                     string[] Sub;
@@ -57,7 +57,7 @@ namespace GnuOne.Data
                     if (subject.Contains("/()/"))
                     {
                         Sub = subject.Split("/()/");
-                        if (splittedBody.Length == 2)
+                        if (splittedBody.Length == 3)
                         {
                             MegaCrypt tempCrypt = new MegaCrypt(splittedBody);
                             //Hämtar publickey för den som skickade.
@@ -77,7 +77,7 @@ namespace GnuOne.Data
                         }
                         else
                         {
-                            decryptedMessage = splittedBody[0];
+                            decryptedMessage = AesCryption.Decrypt(splittedBody[0], myInfo.Secret);
                         }
 
 

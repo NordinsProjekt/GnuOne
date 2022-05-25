@@ -53,7 +53,7 @@ while (keepGoing)
             Console.CursorLeft = 38;
             Console.Write("EmailPassword: ");
             var password = pwMask.pwMasker();
-            ; ///hårdkordad
+            ///hårdkodad
             Console.Clear();
             Meny.DefaultWindow2("");
             Meny.Draw(Meny.EnterUsername(""), 38, 15, ConsoleColor.White);
