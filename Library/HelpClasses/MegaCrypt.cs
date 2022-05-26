@@ -32,6 +32,25 @@ namespace GnuOne.Data
             signature = Encoding.ASCII.GetBytes(wholemail[1]);
             aesKey = Encoding.ASCII.GetBytes(wholemail[2]);
         }
+        public string GetSignature()
+        {
+            string text = "";
+            for (int i = 0; i < signature.Length; i++)
+            {
+                text += signature[i];
+            }
+            return text;
+        }
+
+        public string GetAESKey()
+        {
+            string text = "";
+            for (int i = 0; i < aesKey.Length; i++)
+            {
+                text += aesKey[i];
+            }
+            return text;
+        }
         public bool RSADecryptIt(string senderPublicKey, string receiverPrivateKeyLocation)
         {
             try
