@@ -29,27 +29,17 @@ namespace GnuOne.Data
         public MegaCrypt(string[] wholemail)
         {
             body = wholemail[0];
-            signature = Encoding.ASCII.GetBytes(wholemail[1]);
-            aesKey = Encoding.ASCII.GetBytes(wholemail[2]);
+            signature = Encoding.UTF8.GetBytes(wholemail[1]);
+            aesKey = Encoding.UTF8.GetBytes(wholemail[2]);
         }
         public string GetSignature()
         {
-            string text = "";
-            for (int i = 0; i < signature.Length; i++)
-            {
-                text += signature[i];
-            }
-            return text;
+            return Encoding.UTF8.GetString(signature);
         }
 
         public string GetAESKey()
         {
-            string text = "";
-            for (int i = 0; i < aesKey.Length; i++)
-            {
-                text += aesKey[i];
-            }
-            return text;
+            return Encoding.UTF8.GetString(aesKey);
         }
         public bool RSADecryptIt(string senderPublicKey, string receiverPrivateKeyLocation)
         {
