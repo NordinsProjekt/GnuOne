@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text.Json.Serialization;
+using Welcome_Settings;
 
 namespace GnuOne.Controllers
 {
@@ -31,6 +32,13 @@ namespace GnuOne.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            //Sidan verkar komma hit hela tiden.
+            //Kontrollerar mailen varje gång sidan laddas om.
+            string _connectionstring = Global.CompleteConnectionString;
+            using (MariaContext context = new MariaContext(_connectionstring))
+            {
+                MailReader.ReadUnOpenEmails(context, _connectionstring);
+            }
             var a = await _context.MyProfile.ToListAsync();
             var json = JsonConvert.SerializeObject(a);
             return Ok(json);

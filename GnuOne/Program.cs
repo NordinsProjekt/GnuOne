@@ -170,37 +170,39 @@ app.UseSpa(spa =>
 });
 app.MapFallbackToFile("index.html");
 
+//Verkar kontrollera mailen hela tiden.
+//Mailen ska bara kollas när sidan laddas om.
 
-int a = 0; //Visualiserar att mailfunktionen rullar.
-var loop1Task = Task.Run(async () =>
-{
+//int a = 0; //Visualiserar att mailfunktionen rullar.
+//var loop1Task = Task.Run(async () =>
+//{
 
-    while (true)
-    {
+//    while (true)
+//    {
 
-        try
-        {
-            using (MariaContext context = new MariaContext(_connectionstring))
-            {
+//        try
+//        {
+//            using (MariaContext context = new MariaContext(_connectionstring))
+//            {
 
 
-                MailReader.ReadUnOpenEmails(context, _connectionstring);
-                a++;
-                Console.Clear();
-                Meny.DefaultWindow2("");
-                Meny.Draw(empty, 38, 20, ConsoleColor.White);
+//                MailReader.ReadUnOpenEmails(context, _connectionstring);
+//                a++;
+//                Console.Clear();
+//                Meny.DefaultWindow2("");
+//                Meny.Draw(empty, 38, 20, ConsoleColor.White);
 
-                Console.WriteLine("The Gnu is reading your dedicated inbox");
-                Meny.Draw(empty, 0, 25, ConsoleColor.White);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-        await Task.Delay(2000);
-    }
-});
+//                Console.WriteLine("The Gnu is reading your dedicated inbox");
+//                Meny.Draw(empty, 0, 25, ConsoleColor.White);
+//            }
+//        }
+//        catch (Exception ex)
+//        {
+//            Console.WriteLine(ex.Message);
+//        }
+//        await Task.Delay(60000);
+//    }
+//});
 app.Run();
 
 
