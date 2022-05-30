@@ -2,46 +2,66 @@ using GnuOne.Data;
 using Library;
 using Library.HelpClasses;
 using Library.Models;
-using MailKit.Net.Pop3;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System.Diagnostics;
+using System.Data.SQLite;
 using System.Security.Cryptography;
 using System.Text;
 using Welcome_Settings;
+using Microsoft.EntityFrameworkCore;
 
 string[] empty = { string.Empty };
-bool keepGoing = true;
-while (keepGoing)
+bool keepGoing = false;
+Global.ConnectionString = "DataSource=gnuone.sqlite";
+//SQLite ska ersätta MariaDB
+//Skapar databasen
+//SQLiteConnection.CreateFile(@"gnus.sqlite");
+//SQLiteConnection m_dbConnection;
+//m_dbConnection = new SQLiteConnection(@"Data Source=gnus.sqlite;Version=3;");
+////m_dbConnection.SetPassword("root");
+//m_dbConnection.Open();
+//string sql = Global.sqlite;
+//SQLiteCommand command = new SQLiteCommand(sql,m_dbConnection);
+//command.ExecuteNonQuery();
+//m_dbConnection.Close();
+//Console.ReadKey();
+//
+MariaContext context = new MariaContext(Global.ConnectionString);
+MariaContext DbContext = new MariaContext(Global.ConnectionString);
+WriteToJson("ConnectionStrings:Defaultconnection", Global.ConnectionString);
+if (!File.Exists("gnuone.sqlite"))
+{
+    //Skapar databasen
+    CreateDatabase("sqlite");
+    keepGoing = true;
+}
+if (keepGoing)
 {
     Console.Clear();
     Meny.DefaultWindow2("");
     Meny.Draw(Meny.EnterCredMenu(""), 38, 15, ConsoleColor.White);
-    Global.ConnectionString = EnterCredMenuInput();
+    //Global.ConnectionString = @"Data Source=gnus.sqlite;";//EnterCredMenuInput();
 
     //kolla hur consolen blir när man gör en ny DB
 
-    MariaContext context = new MariaContext(Global.ConnectionString);
-    MariaContext DbContext = new MariaContext(Global.CompleteConnectionString);
-    WriteToJson("ConnectionStrings:Defaultconnection", Global.CompleteConnectionString);
+
+    //MariaContext DbContext = new MariaContext(Global.CompleteConnectionString);
+    //WriteToJson("ConnectionStrings:Defaultconnection", Global.CompleteConnectionString);
 
     //kollar om det är rätt inlog med att skicka någonting till db:n
-    if (await CheckConnection(context))
-    {
-        //no gnu - skapa db
-        if (!IsThereAGnu(DbContext))
-        {
-            CreateDatabase(Global.ConnectionString);
-        }
+    //if (await CheckConnection(context))
+    //{
+    //no gnu - skapa db
+    //if (!IsThereAGnu(DbContext))
+    //{
+    //    CreateDatabase(Global.ConnectionString);
+    //}
 
-        //finns det i db.mysettings
-        if (IsThereMailCredentials(DbContext))
-        {
-            keepGoing = false;
-        }
-        else
-        {
-            Console.Clear();
+    ////finns det i db.mysettings
+    //if (IsThereMailCredentials(DbContext))
+    //{
+    //    keepGoing = false;
+    //}
+    Console.Clear();
             Meny.DefaultWindow2("");
             Meny.Draw(Meny.EnterCredMenu(""), 38, 15, ConsoleColor.White);
             Console.Clear();
@@ -69,47 +89,32 @@ while (keepGoing)
             string publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
             string privateKey = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
 
-            var settings = new MySettings
-            {
-                ID = 1,
-                Email = email,
-                Password = password,
-                userName = username,
-                Secret = "secretkey",
-                //PEM FORMAT
-                MyPrivKey = "-----BEGIN RSA PRIVATE KEY-----" + privateKey + "-----END RSA PRIVATE KEY-----" //här ska private key finnas
-            };
-            var profile = new myProfile //Hårdkodat
-            {
-                ID = 1,
-                Email = email,
-                pictureID = 1,
-                //PEM FORMAT
-                MyPubKey = "-----BEGIN RSA PUBLIC KEY-----" + publicKey +"-----END RSA PUBLIC KEY-----" //här ska public key finnas
-            };
-            rsa.Dispose();
-            try
-            {
-                await DbContext.MyProfile.AddAsync(profile);
-                await DbContext.MySettings.AddAsync(settings);
-                await DbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            keepGoing = false;
-        };
-    }
-    else
+    var settings = new MySettings
     {
-        Console.Clear();
-        Console.WriteLine("Det gick inte att ansluta till databasen testa igen");
-        Console.WriteLine();
-    }
-}
+        ID = 1,
+        Email = email,
+        Password = password,
+        userName = username,
+        Secret = "secretkey",
+        //PEM FORMAT
+        MyPrivKey = "-----BEGIN RSA PRIVATE KEY-----" + privateKey + "-----END RSA PRIVATE KEY-----", //här ska private key finnas
+        DarkMode = 0
+    };
 
+    var profile = new myProfile //Hårdkodat
+    {
+        ID = 1,
+        Email = email,
+        pictureID = 1,
+        myUserInfo = "",
+        //PEM FORMAT
+        MyPubKey = "-----BEGIN RSA PUBLIC KEY-----" + publicKey +"-----END RSA PUBLIC KEY-----" //här ska public key finnas
+    };
+    rsa.Dispose();
+    DbContext.AddAsync(settings);
+    DbContext.AddAsync(profile);
+    DbContext.SaveChangesAsync();
+}
 //Öppnar websidan.
 //Process.Start(new ProcessStartInfo
 //{
@@ -122,7 +127,7 @@ string _connectionstring = builder.Configuration.GetConnectionString("DefaultCon
 // Add services to the container.
 builder.Services.AddDbContext<ApiContext>(Options =>
             Options
-                .UseMySql(_connectionstring, ServerVersion.AutoDetect(_connectionstring))
+                .UseSqlite(_connectionstring)
             );
 
 builder.Services.AddCors(options =>
@@ -168,7 +173,7 @@ app.UseSpa(spa =>
     spa.Options.SourcePath = "ClientApp";
 
 });
-app.MapFallbackToFile("index.html");
+//app.MapFallbackToFile("index.html");
 
 //Verkar kontrollera mailen hela tiden.
 //Mailen ska bara kollas när sidan laddas om.
@@ -207,46 +212,73 @@ app.Run();
 
 
 
-bool IsThereAGnu(MariaContext dbcontext)
+//bool IsThereAGnu(MariaContext dbcontext)
+//{
+//    try
+//    {
+//        dbcontext.Standardpictures.Any();
+//        return true;
+//    }
+//    catch
+//    {
+//        return false;
+//    }
+//}
+//static bool IsThereMailCredentials(MariaContext _newContext)
+//{
+//    //finns det nått finns det allt - Frontend validering
+//    if (_newContext.MySettings.Any())
+//    {
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+//}
+
+//static void CreateDatabase(/*bool created,*/ string connection)
+//{
+//    DbCommand.CreateCommand(Global.sql, connection);
+//}
+
+//static async Task<bool> CheckConnection(MariaContext context)
+//{
+//    try
+//    {   //Försöker skicka in ett vanligt sql scrip
+//        var dontreallycareaboutwhatgetsback = await context.Database.ExecuteSqlRawAsync("SELECT 1");
+//    }
+//    catch (Exception)
+//    {
+//        return false;
+//    }
+//    return true;
+//}
+
+void CreateDatabase(string typ)
 {
-    try
+    switch(typ)
     {
-        dbcontext.Standardpictures.Any();
-        return true;
+        case "sqlite":
+            SQLiteConnection.CreateFile(@"gnuone.sqlite");
+            SQLiteConnection m_dbConnection;
+            m_dbConnection = new SQLiteConnection(@"Data Source=gnuone.sqlite;");
+            //m_dbConnection.SetPassword("root");
+            m_dbConnection.Open();
+            string sql = Global.sqlite;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+            m_dbConnection.Close();
+            break;
+        case "mysql":
+            break;
+        default:
+            break;
     }
-    catch
-    {
-        return false;
-    }
+    //Behöver lite felhantering
+
 }
-static bool IsThereMailCredentials(MariaContext _newContext)
-{
-    //finns det nått finns det allt - Frontend validering
-    if (_newContext.MySettings.Any())
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-static void CreateDatabase(/*bool created,*/ string connection)
-{
-    DbCommand.CreateCommand(Global.sql, connection);
-}
-static async Task<bool> CheckConnection(MariaContext context)
-{
-    try
-    {   //Försöker skicka in ett vanligt sql scrip
-        var dontreallycareaboutwhatgetsback = await context.Database.ExecuteSqlRawAsync("SELECT 1");
-    }
-    catch (Exception)
-    {
-        return false;
-    }
-    return true;
-}
+
 static string EnterCredentials()
 {
     Console.WriteLine("Hello! \n"

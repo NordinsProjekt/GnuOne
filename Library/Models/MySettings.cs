@@ -14,6 +14,6 @@ namespace Library
         public string userName { get; set; }
         public string Secret { get; set; }
         public string MyPrivKey { get; set; }
-        public bool DarkMode { get; set; } = false;
+        public int DarkMode { get; set; } = 0;
     }
 }

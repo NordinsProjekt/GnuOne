@@ -1,4 +1,5 @@
-﻿using GnuOne.Data;
+﻿
+using GnuOne.Data;
 using Library;
 using Library.HelpClasses;
 using Library.Models;
@@ -26,6 +27,7 @@ namespace GnuOne.Controllers
             _context = context;
             _settings = _context.MySettings.First();
         }
+
         /// <summary>
         /// Get profile information
         /// </summary>
@@ -34,15 +36,20 @@ namespace GnuOne.Controllers
         {
             //Sidan verkar komma hit hela tiden.
             //Kontrollerar mailen varje gång sidan laddas om.
-            string _connectionstring = Global.CompleteConnectionString;
-            using (MariaContext context = new MariaContext(_connectionstring))
-            {
-                MailReader.ReadUnOpenEmails(context, _connectionstring);
-            }
+            string _connectionstring = Global.ConnectionString;
+            //Seg, lägg detta till en knapp istället.
+
+            //using (MariaContext context = new MariaContext(_connectionstring))
+            //{
+            //    MailReader.ReadUnOpenEmails(context, _connectionstring);
+            //}
             var a = await _context.MyProfile.ToListAsync();
             var json = JsonConvert.SerializeObject(a);
             return Ok(json);
-        }
+            
+
+
+    }
         /// <summary>
         /// Gets a specific picture's information
         /// </summary>
@@ -53,6 +60,7 @@ namespace GnuOne.Controllers
             var a = await _context.Standardpictures.Where(x => x.pictureID == id).Select(x => x.PictureSrc).FirstAsync();
             var json = JsonConvert.SerializeObject(a);
             return Ok(json);
+            //return Ok();
         }
 
         /// <summary>

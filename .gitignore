@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/GnuOne/gnuone.sqlite-wal
+/GnuOne/gnuone.sqlite-shm
+/GnuOne/gnuone.sqlite

@@ -27,8 +27,8 @@ namespace Welcome_Settings
 
 
 -- Dumpar databasstruktur för gnu
-CREATE DATABASE IF NOT EXISTS `gnu` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `gnu`;
+--CREATE DATABASE IF NOT EXISTS `gnu` /*!40100 DEFAULT CHARACTER SET latin1 */;
+--USE `gnu`;
 
 -- Dumpar struktur för tabell gnu.bookmarks
 CREATE TABLE IF NOT EXISTS `bookmarks` (
@@ -255,5 +255,184 @@ INSERT INTO `tags` (`ID`, `tagName`) VALUES
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;";
+		public static string sqlite = @"PRAGMA journal_mode = MEMORY;
+PRAGMA synchronous = OFF;
+		PRAGMA foreign_keys = OFF;
+		PRAGMA ignore_check_constraints = OFF;
+		PRAGMA auto_vacuum = NONE;
+		PRAGMA secure_delete = OFF;
+		BEGIN TRANSACTION;
+
+
+		CREATE TABLE IF NOT EXISTS `bookmarks` (
+`ID` INTEGER NOT NULL,
+`Email` TEXT DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `comments` (
+`ID` INTEGER NOT NULL,
+`Email` TEXT NOT NULL DEFAULT '',
+`userName` TEXT DEFAULT NULL,
+`Date` datetime DEFAULT NULL,
+`commentText` TEXT NOT NULL,
+`postID` INTEGER NOT NULL,
+`postEmail` TEXT NOT NULL DEFAULT '',
+PRIMARY KEY(`ID`,`Email`),
+FOREIGN KEY(`postID`, `postEmail`) REFERENCES `posts` (`ID`, `Email`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+		CREATE TABLE IF NOT EXISTS `discussions` (
+`ID` INTEGER NOT NULL,
+`Email` TEXT NOT NULL DEFAULT '',
+`Headline` TEXT DEFAULT NULL,
+`discussionText` TEXT DEFAULT NULL,
+`userName` TEXT DEFAULT NULL,
+`Date` datetime DEFAULT NULL,
+`tagOne` INTEGER DEFAULT NULL,
+`tagTwo` INTEGER DEFAULT NULL,
+`tagThree` INTEGER DEFAULT NULL,
+PRIMARY KEY(`ID`,`Email`)
+);
+
+CREATE TABLE IF NOT EXISTS `messages` (
+`ID` INTEGER NOT NULL,
+`Sent` datetime DEFAULT NULL,
+`From` TEXT DEFAULT NULL,
+`To` TEXT DEFAULT NULL,
+`messageText` TEXT DEFAULT NULL,
+PRIMARY KEY(`ID`)
+);
+
+CREATE TABLE IF NOT EXISTS `myfriends` (
+`ID` INTEGER NOT NULL ,
+`userName` TEXT DEFAULT NULL,
+`Email` TEXT NOT NULL,
+`IsFriend` bit(1) DEFAULT NULL,
+`pubKey` text DEFAULT NULL,
+`userInfo` TEXT DEFAULT NULL,
+`pictureID` INTEGER DEFAULT NULL,
+`tagOne` INTEGER DEFAULT NULL,
+`tagTwo` INTEGER DEFAULT NULL,
+`tagThree` INTEGER DEFAULT NULL,
+`hideMe` bit(1) DEFAULT NULL,
+`hideFriend` bit(1) DEFAULT NULL,
+PRIMARY KEY(`ID`)
+);
+
+CREATE TABLE IF NOT EXISTS `myfriendsfriends` (
+`ID` INTEGER NOT NULL ,
+`myFriendEmail` TEXT NOT NULL,
+`userName` TEXT DEFAULT NULL,
+`Email` TEXT DEFAULT NULL,
+`pictureID` INTEGER DEFAULT NULL,
+PRIMARY KEY(`ID`),
+FOREIGN KEY(`myFriendEmail`) REFERENCES `myfriends` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+		CREATE TABLE IF NOT EXISTS `myprofile` (
+`ID` INTEGER NOT NULL ,
+`Email` TEXT DEFAULT NULL,
+`myUserInfo` TEXT DEFAULT NULL,
+`pictureID` INTEGER DEFAULT NULL,
+`tagOne` INTEGER DEFAULT NULL,
+`tagTwo` INTEGER DEFAULT NULL,
+`tagThree` INTEGER DEFAULT NULL,
+`MyPubKey` text DEFAULT NULL,
+PRIMARY KEY(`ID`)
+);
+
+CREATE TABLE IF NOT EXISTS `mysettings` (
+`ID` INTEGER NOT NULL,
+`Email` TEXT DEFAULT NULL,
+`Password` TEXT DEFAULT NULL,
+`userName` TEXT DEFAULT NULL,
+`Secret` TEXT DEFAULT NULL,
+`MyPrivKey` text DEFAULT NULL,
+`DarkMode` bit(1) DEFAULT NULL,
+PRIMARY KEY(`ID`)
+);
+
+		CREATE TABLE IF NOT EXISTS `notifications` (
+`ID` INTEGER NOT NULL ,
+`hasBeenRead` bit(1) NOT NULL DEFAULT 0,
+`messageType` TEXT NOT NULL DEFAULT 0,
+`info` TEXT DEFAULT '',
+`mail` TEXT NOT NULL DEFAULT '',
+`counter` INTEGER NOT NULL DEFAULT 0,
+`infoID` INTEGER DEFAULT NULL,
+PRIMARY KEY(`ID`)
+);
+
+CREATE TABLE IF NOT EXISTS `posts` (
+`ID` INTEGER NOT NULL,
+`Email` TEXT NOT NULL,
+`userName` TEXT NOT NULL DEFAULT '',
+`postText` TEXT NOT NULL DEFAULT '',
+`Date` datetime NOT NULL,
+`discussionID` INTEGER NOT NULL,
+`discussionEmail` TEXT NOT NULL,
+PRIMARY KEY (`ID`,`Email`),
+FOREIGN KEY (`discussionID`, `discussionEmail`) REFERENCES `discussions` (`ID`, `Email`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `standardpictures` (
+`pictureID` INTEGER NOT NULL ,
+`PictureName` TEXT DEFAULT NULL,
+`PictureSrc` TEXT DEFAULT NULL,
+PRIMARY KEY (`pictureID`)
+);
+INSERT INTO `standardpictures` (`pictureID`, `PictureName`, `PictureSrc`) VALUES
+(1, 'BeerGuy', '/image/BeerGuy.jpg'),
+(2, 'Flanders', '/image/Flanders.png'),
+(3, 'Nelson', '/image/Nelson.jpg'),
+(4, 'Ralph', '/image/Ralph.jpg'),
+(5, 'SideShow-Bob', '~/image/SideShow-Bob.jpg');
+
+CREATE TABLE IF NOT EXISTS `tags` (
+`ID` INTEGER NOT NULL,
+`tagName` TEXT NOT NULL,
+PRIMARY KEY (`ID`)
+);
+INSERT INTO `tags` (`ID`, `tagName`) VALUES
+(1, 'Spel'),
+(2, 'Katter'),
+(3, 'Mat'),
+(4, 'Djur'),
+(5, 'Sport'),
+(6, 'Livstil'),
+(7, 'Datorer'),
+(8, 'Foto'),
+(9, 'Musik'),
+(10, 'Film'),
+(11, 'Böcker'),
+(12, 'Dejting'),
+(13, 'Resa'),
+(14, 'Väder'),
+(15, 'Kläder'),
+(16, 'Software'),
+(17, 'Utbildning'),
+(18, 'Porr'),
+(19, 'Fordon'),
+(20, 'Pengar');
+
+
+
+CREATE INDEX `comments_FK_comments_posts` ON `comments` (`postID`);
+CREATE INDEX `discussions_FK_discussions_tags` ON `discussions` (`tagOne`);
+CREATE INDEX `discussions_FK_discussions_tags_2` ON `discussions` (`tagTwo`);
+CREATE INDEX `discussions_FK_discussions_tags_3` ON `discussions` (`tagThree`);
+CREATE INDEX `myfriends_Email` ON `myfriends` (`Email`);
+CREATE INDEX `myfriendsfriends_FK_myfriendsfriends_myfriends` ON `myfriendsfriends` (`myFriendEmail`);
+CREATE INDEX `myprofile_FK_myprofile_tags` ON `myprofile` (`tagOne`);
+CREATE INDEX `myprofile_FK_myprofile_tags_2` ON `myprofile` (`tagTwo`);
+CREATE INDEX `myprofile_FK_myprofile_tags_3` ON `myprofile` (`tagThree`);
+CREATE INDEX `myprofile_FK_myprofile_standardpictures` ON `myprofile` (`pictureID`);
+CREATE INDEX `posts_FK_posts_discussions` ON `posts` (`discussionID`);
+
+COMMIT;
+PRAGMA ignore_check_constraints = ON;
+PRAGMA foreign_keys = ON;
+PRAGMA journal_mode = WAL;
+PRAGMA synchronous = NORMAL;";
     }
 }

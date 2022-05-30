@@ -56,7 +56,15 @@ namespace GnuOne.Controllers
         public async Task<IActionResult> Put(bool darkMode)
         {
             var settings = await _context.MySettings.FirstOrDefaultAsync();
-            settings.DarkMode = darkMode;
+            if (darkMode == true)
+            {
+                settings.DarkMode = 1;
+            }
+            else
+            {
+                settings.DarkMode = 0;
+            }
+            
 
             _context.MySettings.Update(settings);
             await _context.SaveChangesAsync();

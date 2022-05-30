@@ -55,8 +55,6 @@ namespace GnuOne.Data
                 //Return true.
                 if (Verify.VerifySignedHash(orginalData, signature, Key))
                 {
-                    Console.WriteLine("The data was verified.");
-                    Console.WriteLine("Decrypt it");
                     //Password, salt
                     DecryptBodyAES(aesSecret[0], aesSecret[1]);
                     return true;
@@ -89,7 +87,6 @@ namespace GnuOne.Data
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
-                Console.WriteLine(senderPrivateKeyLocation);
                 return false;
             }
             return true;

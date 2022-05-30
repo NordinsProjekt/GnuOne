@@ -2,11 +2,6 @@
 using Library;
 using Library.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GnuOne.Data
 {
@@ -30,12 +25,15 @@ namespace GnuOne.Data
         public DbSet<Bookmark> Bookmarks { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Message> Messages { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            try { 
-            optionsBuilder.UseMySql(_connectionstring, ServerVersion.AutoDetect(_connectionstring));
+            try
+            {
+                optionsBuilder.UseSqlite(_connectionstring);
             }
-            catch (Exception e){
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
         }

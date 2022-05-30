@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Library.HelpClasses
 {
     //Send a command to Heidi to see if Gnu exist.
+    //Radera, onödig funktion?
     public class DbCommand
     {
 
