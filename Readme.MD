@@ -136,7 +136,7 @@ Room for improvement:
 To do:
 - The ability to share & upload files between friends/user.
 - Use a different mail-account than Gmail
-- Run the project without HeidiSQL
+- Run the project without HeidiSQL [X] Done, using SQLite instead
 
 
 
