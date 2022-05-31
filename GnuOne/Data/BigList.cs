@@ -75,7 +75,7 @@ namespace GnuOne.Data
             var myFriends = _context.MyFriends.Where(x=> x.isFriend == true).ToList();
 
 
-            var sendUsername = _context.MySettings.Select(x => x.userName).Single();
+            var sendUsername = _context.MySettings.Select(x => x.UserName).Single();
 
 
             
@@ -103,7 +103,7 @@ namespace GnuOne.Data
             }
             var myFriends = _context.MyFriends.Where(x => x.isFriend == true).ToList();
 
-            var sendUsername = _context.MySettings.Select(x => x.userName).Single();
+            var sendUsername = _context.MySettings.Select(x => x.UserName).Single();
 
 
 

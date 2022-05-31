@@ -18,6 +18,7 @@ namespace Library.HelpClasses
     public class MailSender
     {
         //Methods to send messages from mail.
+        //Krypterar mailet korrekt, har inte fixat detta ännu för alla metoder.
         public static void SendObject(string myInfo, string email, MySettings _settings, string subject,string recieverPublicKey,string senderPrivKey)
         {
             MegaCrypt tempCrypt = new MegaCrypt(myInfo);
@@ -54,7 +55,7 @@ namespace Library.HelpClasses
                 Text = crypt
             };
 
-            message.From.Add(new MailboxAddress(mySettings.userName, mailAddress));
+            message.From.Add(new MailboxAddress(mySettings.UserName, mailAddress));
             message.To.Add(MailboxAddress.Parse(emailTo));
 
             SmtpClient client = new SmtpClient();
@@ -94,7 +95,7 @@ namespace Library.HelpClasses
                 Text = crypt
             };
 
-            message.From.Add(new MailboxAddress(mySettings.userName, mailAddress));
+            message.From.Add(new MailboxAddress(mySettings.UserName, mailAddress));
             message.To.Add(MailboxAddress.Parse(emailTo));
 
             SmtpClient client = new SmtpClient();

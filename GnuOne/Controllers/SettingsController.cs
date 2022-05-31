@@ -56,16 +56,6 @@ namespace GnuOne.Controllers
         public async Task<IActionResult> Put(bool darkMode)
         {
             var settings = await _context.MySettings.FirstOrDefaultAsync();
-            if (darkMode == true)
-            {
-                settings.DarkMode = 1;
-            }
-            else
-            {
-                settings.DarkMode = 0;
-            }
-            
-
             _context.MySettings.Update(settings);
             await _context.SaveChangesAsync();
             return Ok();
@@ -91,8 +81,8 @@ namespace GnuOne.Controllers
         [HttpPut("username")]
         public async Task<IActionResult> updateSettingsPut([FromBody] string username)
         {
-            var oldUsername = _settings.userName;
-            _settings.userName = username;
+            var oldUsername = _settings.UserName;
+            _settings.UserName = username;
             _context.MySettings.Update(_settings);
             await _context.SaveChangesAsync();
 

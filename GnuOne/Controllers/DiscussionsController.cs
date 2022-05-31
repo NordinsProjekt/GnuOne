@@ -135,7 +135,7 @@ namespace GnuOne.Controllers
             long unixID = ((DateTimeOffset)unixTime).ToUnixTimeSeconds();
             discussion.ID = Convert.ToInt32(unixID);
             discussion.Email = _settings.Email;
-            discussion.userName = _settings.userName;
+            discussion.userName = _settings.UserName;
 
             var jsonDiscussion = JsonConvert.SerializeObject(discussion);
 

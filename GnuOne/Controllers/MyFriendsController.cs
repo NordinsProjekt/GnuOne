@@ -42,7 +42,7 @@ namespace GnuOne.Controllers
             var myInfo = new MyFriend
             {
                 Email = _settings.Email,
-                userName = _settings.userName,
+                userName = _settings.UserName,
                 isFriend = false,
                 userInfo = myProfile.myUserInfo,
                 pictureID = myProfile.pictureID,
@@ -109,7 +109,7 @@ namespace GnuOne.Controllers
             var myInfo = new MyFriend
             {
                 Email = _settings.Email.ToString(),
-                userName = _settings.userName.ToString()
+                userName = _settings.UserName.ToString()
             };
             var jsonMyInfoInObject = JsonConvert.SerializeObject(myInfo);
 
@@ -131,7 +131,7 @@ namespace GnuOne.Controllers
                 var myProfile = await _context.MyProfile.FirstOrDefaultAsync();
 
                 var bigListWithMyInfo = BigList.FillingBigListWithMyInfo(_context, myInfo.Email, true, myProfile);
-                bigListWithMyInfo.username = _settings.userName.ToString();
+                bigListWithMyInfo.username = _settings.UserName.ToString();
 
                 var jsonBigListObject = JsonConvert.SerializeObject(bigListWithMyInfo);
 

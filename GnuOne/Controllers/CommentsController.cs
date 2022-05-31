@@ -72,7 +72,7 @@ namespace GnuOne.Controllers
             long unixID = ((DateTimeOffset)foo).ToUnixTimeSeconds();
             comment.ID = Convert.ToInt32(unixID);
             comment.Email = _settings.Email;
-            comment.userName = _settings.userName;
+            comment.userName = _settings.UserName;
 
             var jsonComment = JsonConvert.SerializeObject(comment);
 

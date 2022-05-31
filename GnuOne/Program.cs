@@ -12,19 +12,6 @@ using Microsoft.EntityFrameworkCore;
 string[] empty = { string.Empty };
 bool keepGoing = false;
 Global.ConnectionString = "DataSource=gnuone.sqlite";
-//SQLite ska ersätta MariaDB
-//Skapar databasen
-//SQLiteConnection.CreateFile(@"gnus.sqlite");
-//SQLiteConnection m_dbConnection;
-//m_dbConnection = new SQLiteConnection(@"Data Source=gnus.sqlite;Version=3;");
-////m_dbConnection.SetPassword("root");
-//m_dbConnection.Open();
-//string sql = Global.sqlite;
-//SQLiteCommand command = new SQLiteCommand(sql,m_dbConnection);
-//command.ExecuteNonQuery();
-//m_dbConnection.Close();
-//Console.ReadKey();
-//
 MariaContext context = new MariaContext(Global.ConnectionString);
 MariaContext DbContext = new MariaContext(Global.ConnectionString);
 WriteToJson("ConnectionStrings:Defaultconnection", Global.ConnectionString);
@@ -39,66 +26,44 @@ if (keepGoing)
     Console.Clear();
     Meny.DefaultWindow2("");
     Meny.Draw(Meny.EnterCredMenu(""), 38, 15, ConsoleColor.White);
-    //Global.ConnectionString = @"Data Source=gnus.sqlite;";//EnterCredMenuInput();
-
-    //kolla hur consolen blir när man gör en ny DB
-
-
-    //MariaContext DbContext = new MariaContext(Global.CompleteConnectionString);
-    //WriteToJson("ConnectionStrings:Defaultconnection", Global.CompleteConnectionString);
-
-    //kollar om det är rätt inlog med att skicka någonting till db:n
-    //if (await CheckConnection(context))
-    //{
-    //no gnu - skapa db
-    //if (!IsThereAGnu(DbContext))
-    //{
-    //    CreateDatabase(Global.ConnectionString);
-    //}
-
-    ////finns det i db.mysettings
-    //if (IsThereMailCredentials(DbContext))
-    //{
-    //    keepGoing = false;
-    //}
     Console.Clear();
-            Meny.DefaultWindow2("");
-            Meny.Draw(Meny.EnterCredMenu(""), 38, 15, ConsoleColor.White);
-            Console.Clear();
-            Meny.DefaultWindow2("");
-            Meny.Draw(Meny.EnterMailInfo(""), 38, 15,ConsoleColor.White);
-            Console.CursorLeft = 38;
-            Console.Write("Write your Email: ");
-            var email = Console.ReadLine();
-            Console.CursorLeft = 38;
-            Console.Write("EmailPassword: ");
-            var password = pwMask.pwMasker();
-            ///hårdkodad
-            Console.Clear();
-            Meny.DefaultWindow2("");
-            Meny.Draw(Meny.EnterUsername(""), 38, 15, ConsoleColor.White);
-            Console.CursorLeft = 38;
-            Console.Write("Choose your username: ");
-            var username = Console.ReadLine();
-            var secretk = RandomKey();
-            password = AesCryption.Encrypt(password, "secretkey"); //ska bytas
+    Meny.DefaultWindow2("");
+    Meny.Draw(Meny.EnterCredMenu(""), 38, 15, ConsoleColor.White);
+    Console.Clear();
+    Meny.DefaultWindow2("");
+    Meny.Draw(Meny.EnterMailInfo(""), 38, 15,ConsoleColor.White);
+    Console.CursorLeft = 38;
+    Console.Write("Write your Email: ");
+    var email = Console.ReadLine();
+    Console.CursorLeft = 38;
+    Console.Write("EmailPassword: ");
+    var password = pwMask.pwMasker();
+    ///hårdkodad
+    Console.Clear();
+    Meny.DefaultWindow2("");
+    Meny.Draw(Meny.EnterUsername(""), 38, 15, ConsoleColor.White);
+    Console.CursorLeft = 38;
+    Console.Write("Choose your username: ");
+    var username = Console.ReadLine();
+    var secretk = RandomKey();
+    password = AesCryption.Encrypt(password, "secretkey"); //ska bytas
 
-            //Skapar RSA nycklar och sparar dessa i databasen.
-            //Framtiden så ska detta skyddas genom krypering av den privata nyckeln.
-            RSA rsa = RSA.Create(4096);
-            string publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
-            string privateKey = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
+    //Skapar RSA nycklar och sparar dessa i databasen.
+    //Framtiden så ska detta skyddas genom krypering av den privata nyckeln.
+    RSA rsa = RSA.Create(4096);
+    string publicKey = Convert.ToBase64String(rsa.ExportRSAPublicKey());
+    string privateKey = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
 
     var settings = new MySettings
     {
         ID = 1,
         Email = email,
         Password = password,
-        userName = username,
+        UserName = username,
         Secret = "secretkey",
         //PEM FORMAT
         MyPrivKey = "-----BEGIN RSA PRIVATE KEY-----" + privateKey + "-----END RSA PRIVATE KEY-----", //här ska private key finnas
-        DarkMode = 0
+        DarkMode = false
     };
 
     var profile = new myProfile //Hårdkodat
@@ -173,87 +138,7 @@ app.UseSpa(spa =>
     spa.Options.SourcePath = "ClientApp";
 
 });
-//app.MapFallbackToFile("index.html");
-
-//Verkar kontrollera mailen hela tiden.
-//Mailen ska bara kollas när sidan laddas om.
-
-//int a = 0; //Visualiserar att mailfunktionen rullar.
-//var loop1Task = Task.Run(async () =>
-//{
-
-//    while (true)
-//    {
-
-//        try
-//        {
-//            using (MariaContext context = new MariaContext(_connectionstring))
-//            {
-
-
-//                MailReader.ReadUnOpenEmails(context, _connectionstring);
-//                a++;
-//                Console.Clear();
-//                Meny.DefaultWindow2("");
-//                Meny.Draw(empty, 38, 20, ConsoleColor.White);
-
-//                Console.WriteLine("The Gnu is reading your dedicated inbox");
-//                Meny.Draw(empty, 0, 25, ConsoleColor.White);
-//            }
-//        }
-//        catch (Exception ex)
-//        {
-//            Console.WriteLine(ex.Message);
-//        }
-//        await Task.Delay(60000);
-//    }
-//});
 app.Run();
-
-
-
-//bool IsThereAGnu(MariaContext dbcontext)
-//{
-//    try
-//    {
-//        dbcontext.Standardpictures.Any();
-//        return true;
-//    }
-//    catch
-//    {
-//        return false;
-//    }
-//}
-//static bool IsThereMailCredentials(MariaContext _newContext)
-//{
-//    //finns det nått finns det allt - Frontend validering
-//    if (_newContext.MySettings.Any())
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        return false;
-//    }
-//}
-
-//static void CreateDatabase(/*bool created,*/ string connection)
-//{
-//    DbCommand.CreateCommand(Global.sql, connection);
-//}
-
-//static async Task<bool> CheckConnection(MariaContext context)
-//{
-//    try
-//    {   //Försöker skicka in ett vanligt sql scrip
-//        var dontreallycareaboutwhatgetsback = await context.Database.ExecuteSqlRawAsync("SELECT 1");
-//    }
-//    catch (Exception)
-//    {
-//        return false;
-//    }
-//    return true;
-//}
 
 void CreateDatabase(string typ)
 {
@@ -279,35 +164,31 @@ void CreateDatabase(string typ)
 
 }
 
-static string EnterCredentials()
-{
-    Console.WriteLine("Hello! \n"
-                      + "Thanks for using this app.\n" +
-                          "Please enter your heidi-username and password.");
-    Console.WriteLine();
-    Console.Write("Username: ");
+//static string EnterCredentials()
+//{
+//    Console.WriteLine("Hello! \n"
+//                      + "Thanks for using this app.\n" +
+//                          "Please enter your heidi-username and password.");
+//    Console.WriteLine();
+//    Console.Write("Username: ");
 
-    var inputUserName = Console.ReadLine();
+//    var inputUserName = Console.ReadLine();
 
-    Console.Write("Password: ");
+//    Console.Write("Password: ");
 
-    string inputPassWord = pwMask.pwMasker();
+//    string inputPassWord = pwMask.pwMasker();
 
-    Console.WriteLine();
+//    Console.WriteLine();
 
-    ///connectionstringen byggs
-    string newConnection = "server=localhost;user id=" + inputUserName + ";password=" + inputPassWord + ";";
-    /// den fullständiga med DB till global
-    Global.CompleteConnectionString = "server=localhost;user id=" + inputUserName + ";password=" + inputPassWord + ";database=gnu;";
+//    ///connectionstringen byggs
+//    //string newConnection = "server=localhost;user id=" + inputUserName + ";password=" + inputPassWord + ";";
+//    /// den fullständiga med DB till global
+//    //Global.CompleteConnectionString = "server=localhost;user id=" + inputUserName + ";password=" + inputPassWord + ";database=gnu;";
 
-    ///write to appsettings.json
+//    ///write to appsettings.json
 
-    return newConnection;
-    //Console.Clear();
-    //Console.ForegroundColor = ConsoleColor.Blue;
-    //Console.WriteLine(" - Dont shut this window down - ");
-    //Console.WriteLine();
-}
+//    //return newConnection;
+//}
 static void WriteToJson(string sectionPathKey, string value)
 {
     string file = "\\appsettings.json";

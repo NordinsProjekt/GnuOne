@@ -81,25 +81,24 @@ namespace GnuOne.Controllers
             var myInfo = new MyFriend
             {
                 Email = _settings.Email,
-                userName = _settings.userName,
+                userName = _settings.UserName,
                 userInfo = Profile.myUserInfo,
                 pictureID = Profile.pictureID,
                 tagOne = Profile.tagOne,
                 tagTwo = Profile.tagTwo,
                 tagThree = Profile.tagThree
             };
-
+            _context.MyProfile.Update(myprofile);
+            await _context.SaveChangesAsync();
             var jsonProfileInfo = JsonConvert.SerializeObject(myInfo);
 
+            //Skickar uppdateringen till ens vänner.
             foreach (var user in _context.MyFriends)
             {
                 if (user.isFriend == false) { continue; }
                 MailSender.SendObject(jsonProfileInfo, user.Email, _settings, "PutFriendsProfile");
-
-
-
-                _context.MyProfile.Update(myprofile);
-                await _context.SaveChangesAsync();
+                //_context.MyProfile.Update(myprofile);
+               // await _context.SaveChangesAsync();
 
             }
                 return Ok("Updated profile");
