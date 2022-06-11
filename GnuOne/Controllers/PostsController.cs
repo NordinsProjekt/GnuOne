@@ -73,9 +73,8 @@ namespace GnuOne.Controllers
             post.ID = Convert.ToInt32(unixID);
             post.Email = _settings.Email;
             post.userName = _settings.UserName;
-
             var jsonPost = JsonConvert.SerializeObject(post);
-
+            //MailSender.SendObject(jsonPost, post.discussionEmail, _settings, "PostedPost", user.pubKey, _settings.MyPrivKey);
             MailSender.SendObject(jsonPost, post.discussionEmail, _settings, "PostedPost");
 
             await _context.AddAsync(post);

@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace GnuOne.Data
+namespace Library.HelpClasses
 {
     public class MegaCrypt
     {
@@ -97,9 +97,7 @@ namespace GnuOne.Data
             Random rnd = new Random();
             string letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!""#%&/()=?[]@$*-+";
             for (int i = 0; i < antalTecken; i++)
-            {
                 sb.Append(letters[rnd.Next(0, letters.Length)]);
-            }
             return sb.ToString();
         }
 

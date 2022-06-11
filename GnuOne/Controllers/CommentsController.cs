@@ -33,7 +33,6 @@ namespace GnuOne.Controllers
         {
             var lista = await _context.Comments.ToListAsync();
             var converted = JsonConvert.SerializeObject(lista);
-
             return Ok(converted);
         }
 
